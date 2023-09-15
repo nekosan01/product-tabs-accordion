@@ -1,0 +1,132 @@
+{% capture product_description %}{{ product.description }}{% endcapture %}
+{% assign section_parts = product_description | split: '<h6' %}
+{% assign tab_headers = '' %}
+{% assign tab_contents = '' %}
+
+{% for part in section_parts %}
+  {% assign section_content_parts = part | split: '</h6>' %}
+  {% if section_content_parts.size > 1 %}
+    {% assign header = '<h6' | append: section_content_parts[0] %}
+    {% assign content = section_content_parts[1] %}
+    {% assign tab_headers = tab_headers | append: header | append: ';;' %}
+    {% assign tab_contents = tab_contents | append: content | append: ';;' %}
+  {% endif %}
+{% endfor %}
+
+{% assign tab_headers = tab_headers | split: ';;' %}
+{% assign tab_contents = tab_contents | split: ';;' %}
+
+{% for i in (0..tab_headers.size) %}
+  {% if tab_headers[i] != blank %}
+    <div class="product-accordion">  
+      <details class="Accordion_Huge" aria-controls="Details-{{ product.id }}-{{ i }}">
+        <summary class="Accordion_Huge__summary" id="Details-{{ product.id }}-{{ i }}">
+          <h6 class="Accordion_Huge__summary__header">
+            <span class="Text-ds Text-ds--body-2 Text-ds--left">{{ tab_headers[i] }}</span>
+          </h6>
+        </summary>
+        <div class="Accordion_Huge__content">
+          <div class="Markdown Markdown--body-2" data-test="markdown">
+            {{ tab_contents[i] }}
+          </div>
+        </div>
+      </details>
+    </div>
+  {% endif %}
+{% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+<style>
+  .Accordion_Huge[open] > .Accordion_Huge__summary:after, .Accordion_Huge[open] > .Accordion_Huge__summary:before {
+    -webkit-transform: translateY(-50%) rotate(180deg);
+    transform: translateY(-50%) rotate(180deg);
+}
+  h6.Accordion_Huge__summary__header {
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+  .Markdown.Markdown--body-2 >h4 {
+    display: none;
+}
+  .Accordion_Huge {
+    border-bottom: 1px solid #363636;
+    margin: 2.5rem 0;
+    position: relative;
+    transition: padding .25s;
+}
+  Accordion_Huge__summary {
+    cursor: pointer;
+    list-style-type: none;
+    margin-bottom: 0.5rem;
+    outline: 0;
+    position: relative;
+}
+  .Accordion_Huge__summary:after, .Accordion_Huge__summary:before {
+    background-color: #000;
+    bottom: 0.48rem;
+    content: "";
+    height: 1px;
+    position: absolute;
+    right: 0.1rem;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    transition: all .3s ease-in-out;
+    width: 13px;
+}
+  .Accordion_Huge__summary:after {
+    -webkit-transform: translateY(-50%) rotate(90deg);
+    transform: translateY(-50%) rotate(90deg);
+}
+  .Accordion_Huge__content {
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: .015625rem;
+    line-height: 1.25rem;
+    padding: 1.5rem 0;
+}
+  .ProductDetail__Content details .Markdown h4 {
+    font-size: 14px;
+    margin-bottom: 0.5rem;
+}
+  .Text-ds--left {
+    text-align: left;
+}
+
+.Text-ds--body-2 {
+    font-size: 14px;
+    line-height: 1.25rem;
+}
+.Text-ds--body-1, .Text-ds--body-2 {
+    font-weight: 300;
+    letter-spacing: .015625rem;
+}
+.Text-ds {
+    margin: 0;
+}
+    .Text-ds--body-2 h6 {
+    font-size: 20px!important;
+    line-height: 1.25rem;
+    font-family: 'Neoneon';
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+  .product__title>* {
+    margin: 0;
+    font-family: 'Neoneon';
+}
+.Markdown.Markdown--body-2 p {
+    line-height: calc(1 + 0.8 / var(--font-body-scale));
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+}
+</style>
