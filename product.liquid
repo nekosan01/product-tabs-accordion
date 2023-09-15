@@ -1,0 +1,8 @@
+ {%- when 'description' -%}
+{%- if product.description != blank -%}
+  <div class="product__description rte quick-add-hidden" {{ block.shopify_attributes }}>
+    {% assign product_description = product.description | split: '<h6' %}
+    {% assign filtered_description = product_description[0] %}
+    {{ filtered_description }}
+  </div>
+{%- endif -%}
